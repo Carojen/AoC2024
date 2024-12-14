@@ -5,20 +5,22 @@ import kotlin.math.abs
 fun main() {
     val name = "Kotlin"
   println("Which day do you want to run?")
-    val day = readln()
+    val dayAndPart = readln()
+    val day = dayAndPart.split(" ")[0]
     val input = ReadFile(day = day)
+    var result = "NaN"
 
-    if(day == "1a")
+    if(dayAndPart == "1 a")
     {
-        val result = Day1a(input)
-        println("The result of $day is ${result}")
-        println(result)
+        result = Day1a(input)
     }
-
-
-    for (i in 1..5) {
-         //println("i = $i")
+    else if(dayAndPart == "1 b")
+    {
+        result = Day1b(input)
     }
+    println("The result of $dayAndPart is ${result}")
+
+    println(result)
 }
 
 fun ReadFile(day: String):String
@@ -36,24 +38,51 @@ fun Day1a(input: String):String
     val lines = input.split("\n").toTypedArray()
     for(line in lines)
     {
-        //println(line)
         val values = line.split("\\s+ ".toRegex()).toTypedArray()
-        //println("first "+values[0].trim()+" " +values[0].length)
-        //println("second "+values[1].trim()+" "+values[1].length)
-
         firstList.add(values[0].trim().toInt())
         secondList.add(values[1].trim().toInt())
     }
     firstList.sort()
     secondList.sort()
-    //println(firstList)
-    //println(secondList)
     var totalDistance:Int = 0
     for(i in firstList.indices)
     {
-        //println(firstList[i].toString() + " - " + secondList[i].toString() + " = " + (abs(firstList[i] - secondList[i])))
         var distance = abs(firstList[i]-secondList[i])
         totalDistance += distance
     }
     return totalDistance.toString()
+}
+fun Day1b(input: String):String
+{
+    var firstList: MutableList<Int> = mutableListOf()
+    var secondList: MutableList<Int> = mutableListOf()
+    val lines = input.split("\n").toTypedArray()
+    for(line in lines)
+    {
+        val values = line.split("\\s+ ".toRegex()).toTypedArray()
+        firstList.add(values[0].trim().toInt())
+        secondList.add(values[1].trim().toInt())
+    }
+    firstList.sort()
+    secondList.sort()
+    val similarityMap:MutableMap<Int,Int> = mutableMapOf()
+    var totalSimilarity = 0
+    for(item in firstList)
+    {
+        if(similarityMap.containsKey(item))
+        {
+            totalSimilarity += similarityMap.getValue(item)
+        }
+        else
+        {
+            var numberOfItem = 0
+            for(other in secondList)
+            {
+                if(other == item)
+                    numberOfItem++
+            }
+            totalSimilarity += numberOfItem * item
+        }
+    }
+    return totalSimilarity.toString()
 }

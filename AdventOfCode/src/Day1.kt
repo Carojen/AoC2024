@@ -5,7 +5,7 @@ class Day1: Day() {
     {
         val firstList: MutableList<Int> = mutableListOf()
         val secondList: MutableList<Int> = mutableListOf()
-        val lines = SplitLines(input)
+        val lines = splitLines(input)
         for(line in lines)
         {
             val values = line.split("\\s+ ".toRegex()).toTypedArray()

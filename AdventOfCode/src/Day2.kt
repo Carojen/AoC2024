@@ -51,7 +51,7 @@ class Day2:Day() {
 
     private fun runDay(input: String, allowOneOff: Boolean = false):String
     {
-        val lines = SplitLines(input)
+        val lines = splitLines(input)
         var numberOfSafeReports = 0
         for(line in lines)
         {

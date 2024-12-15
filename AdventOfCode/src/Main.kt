@@ -1,6 +1,4 @@
 import java.io.File
-import kotlin.math.abs
-import kotlin.math.sign
 
 
 fun main() {
@@ -8,7 +6,7 @@ fun main() {
     val dayAndPart = readln()
     val day = dayAndPart.split(" ")[0]
     val part = dayAndPart.split(" ").last()
-    val input = ReadFile(day = day)
+    val input = readFile(day = day)
     var result = "NaN"
 
     if(day == "1")
@@ -22,13 +20,13 @@ fun main() {
     println(result)
 }
 
-fun ReadFile(day: String): String
+fun readFile(day: String): String
 {
     println("Read file input: " + day)
     val input = File("input/"+day+".txt").inputStream().readBytes().toString(Charsets.UTF_8)
     return input
 }
-fun SplitLines(input: String): Array<String>
+fun splitLines(input: String): Array<String>
 {
     val lines = input.split("\n").toTypedArray()
     return lines

@@ -15,7 +15,8 @@ class Day4:Day() {
     }
 
     override fun RunPartTwo(input: String): String {
-        TODO("Not yet implemented")
+        val lines: List<String> = splitLines(input.trim()).map{it.trim()}
+        return findCrossings(lines).toString()
     }
 
     private fun findHorizontal(lines:List<String>): Int
@@ -119,5 +120,37 @@ class Day4:Day() {
             }
         }
         return 1
+    }
+
+    private fun findCrossings(lines:List<String>):Int
+    {
+        var totalCrossings: Int = 0
+        for(lineIndex in lines.indices)
+        {
+            if(lineIndex == 0 || lineIndex == lines.indices.last()) continue
+            for(columnIndex in lines[0].indices)
+            {
+                if(columnIndex == 0 || columnIndex == lines[0].indices.last()) continue
+                if(lines[lineIndex][columnIndex] != 'A') continue
+                //println("Crossing: $lineIndex:$columnIndex:$lineIndex:$columnIndex")
+
+                val upLeft:Char = lines[lineIndex-1][columnIndex-1]
+                if(upLeft != 'S' && upLeft != 'M') continue
+
+                val upRight:Char = lines[lineIndex-1][columnIndex+1]
+                if(upRight != 'S' && upRight != 'M') continue
+
+                val downLeft:Char = lines[lineIndex+1][columnIndex-1]
+                if(downLeft != 'S' && downLeft != 'M') continue
+                if(downLeft == upRight) continue
+
+                val downRight:Char = lines[lineIndex+1][columnIndex+1]
+                if(downRight != 'S' && downRight != 'M') continue
+                if(downRight == upLeft) continue
+
+                totalCrossings++
+            }
+        }
+        return totalCrossings
     }
 }

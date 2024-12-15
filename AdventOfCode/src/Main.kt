@@ -15,6 +15,8 @@ fun main() {
         result = Day2().RunPart(part, input)
     else if(day == "3")
         result = Day3().RunPart(part, input)
+    else if(day == "4")
+        result = Day4().RunPart(part, input)
 
     println("The result of $dayAndPart is ${result}")
     println(result)

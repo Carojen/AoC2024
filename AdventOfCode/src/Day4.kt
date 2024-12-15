@@ -54,21 +54,25 @@ class Day4:Day() {
         var checkDown: Boolean = true
         var checkLeft: Boolean = true
         var checkRight: Boolean = true
+        //println("Total area: ${lines.indices.count()} x ${lines[0].indices.count()}")
 
         for (lineIndex in lines.indices)
         {
             checkUp = (lineIndex >= wordLength - 1)
-            checkDown = (lineIndex < lines.count() - wordLength)
+            checkDown = (lineIndex <= lines.count() - wordLength)
 
             val currentLine = lines[lineIndex]
             for (columnIndex in currentLine.indices)
             {
-                if(currentLine[columnIndex] != 'X')
-                    continue
+
                 //println("Found X at $lineIndex,$columnIndex")
 
                 checkLeft = (columnIndex >= wordLength - 1)
-                checkRight = (columnIndex < currentLine.count() - wordLength)
+                checkRight = (columnIndex <= currentLine.count() - wordLength)
+                //if(!checkDown && !checkRight)
+                //    println("End of area at $lineIndex,$columnIndex")
+                if(currentLine[columnIndex] != 'X')
+                    continue
 
                 if(checkUp && checkLeft)
                 {

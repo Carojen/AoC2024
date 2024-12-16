@@ -2,53 +2,88 @@ class Day5: Day() {
     override fun runPartOne(input: String): String {
         var totalMiddlePages = 0
         val lines = input.lines()
-
         val rulesAndUpdates = lines.partition { it.contains("|")}
-        val rules: MutableList<Pair<Int, Int>?> = MutableList(size = rulesAndUpdates.first.size) { null }
 
-        for(ruleIndex in rulesAndUpdates.first.indices)
-        {
-            rules[ruleIndex] = processRule(lines[ruleIndex])
-        }
         for(update in rulesAndUpdates.second)
         {
             if(update.isEmpty()) continue
-            val validMiddlePageOrNegative = verifyUpdate(update, rulesAndUpdates.first)
-            if(validMiddlePageOrNegative != -1)
-                totalMiddlePages += validMiddlePageOrNegative
+            val pages = update.split(',').map{it.trim().toInt()}
+            val failedRulesAndMiddlePage = verifyUpdate(pages, rulesAndUpdates.first, failFast = true)
+            if(failedRulesAndMiddlePage.second > 0)
+                totalMiddlePages += failedRulesAndMiddlePage.second
         }
 
         return totalMiddlePages.toString()
     }
 
-    override fun runPartTwo(input: String): String {
-        TODO("Not yet implemented")
+    override fun runPartTwo(input: String): String
+    {
+        var totalMiddlePages = 0
+        val lines = input.lines()
+        val rulesAndUpdates = lines.partition { it.contains("|")}
+
+        for(update in rulesAndUpdates.second)
+        {
+            if(update.isEmpty()) continue
+            var pages = update.split(',').map{it.trim().toInt()}.toMutableList()
+            val failedRulesAndMiddlePage = verifyUpdate(pages, rulesAndUpdates.first, failFast = false)
+            if(failedRulesAndMiddlePage.first.isNotEmpty())
+            {
+                println("Has failed rules")
+                pages = sortUpdate(pages, failedRulesAndMiddlePage.first)
+                totalMiddlePages += pages[pages.size/2]
+            }
+        }
+        return totalMiddlePages.toString()
     }
 
-    private fun processRule(line:String): Pair<Int, Int>
+    private fun sortUpdate(pages: MutableList<Int>, rules: List<String>): MutableList<Int>
     {
-        return Pair(line[0].digitToInt(), line[1].digitToInt())
+        val sortedPages = pages.sortedWith{ a, b -> comparePages(a, b, rules)}.toMutableList()
+        println("$pages -> $sortedPages")
+        return sortedPages
     }
-    private fun verifyUpdate(update: String, rules: List<String>): Int
+
+    private fun comparePages(first: Int, second: Int, rules:List<String>): Int
     {
-        val pages:List<Int> = update.split(',').map{it.trim().toInt()}
+        if(rules.contains("$first|$second"))
+        {
+            //println("$first -> $second")
+            return -1
+        }
+        else if(rules.contains("$second|$first"))
+        {
+            //println("$first <- $second")
+            return 1
+        }
+        //println("$first - $second")
+        return 0
+    }
+
+    private fun verifyUpdate(pages: List<Int>, rules: List<String>, failFast:Boolean): Pair<List<String>, Int>
+    {
+        val failedRules: MutableList<String> = mutableListOf()
         for(first in pages.indices)
         {
             var second = first + 1
             while(second <= pages.lastIndex)
             {
-                val checkFor:String = "${pages[second]}|${pages[first]}"
+                val checkFor = "${pages[second]}|${pages[first]}"
                 //println("Check $update -> $checkFor")
                 if (rules.contains(checkFor))
                 {
-                    println("$update was not valid: $checkFor")
-                    return -1
+                    failedRules += checkFor
+                    println("${pages.joinToString(",")} was not valid: $checkFor")
+
+                    if(failFast)
+                        return Pair(emptyList(), -1)
                 }
                 //println("Not found")
                 second++
             }
         }
-        println("$update was valid. ${pages[pages.size/2]}")
-        return pages[pages.size/2]
+        if(failedRules.isEmpty())
+            println("${pages.joinToString(",")} was valid. ${pages[pages.size/2]}")
+        return Pair<List<String>,Int>(failedRules,pages[pages.size/2])
     }
 }

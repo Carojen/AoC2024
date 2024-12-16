@@ -1,20 +1,20 @@
 class Day3:Day() {
-    override fun RunPartOne(input: String): String
+    override fun runPartOne(input: String): String
     {
-        return FindAndCalculateMultipliers(input, useEnablers = false).toString()
+        return findAndCalculateMultipliers(input, useEnablers = false).toString()
     }
 
-    override fun RunPartTwo(input: String): String {
-        return FindAndCalculateMultipliers(input, useEnablers = true).toString()
+    override fun runPartTwo(input: String): String {
+        return findAndCalculateMultipliers(input, useEnablers = true).toString()
     }
 
-    private fun FindAndCalculateMultipliers(input: String, useEnablers: Boolean = false): Int
+    private fun findAndCalculateMultipliers(input: String, useEnablers: Boolean = false): Int
     {
-        var totalAmount:Int = 0
+        var totalAmount = 0
         val instructions = input.split("mul")
 
         var previousSection: String? = null
-        var enabled: Boolean = true
+        var enabled = true
         for(section in instructions)
         {
             val numbers = section.split(")")[0].removePrefix("(").split(",")

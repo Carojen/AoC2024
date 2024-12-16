@@ -1,12 +1,12 @@
 abstract class Day
 {
-    fun RunPart(part:String, input: String): String
+    fun runPart(part:String, input: String): String
     {
-        if(part == "b" || part == "2")
-            return RunPartTwo(input)
+        return if(part == "b" || part == "2")
+            runPartTwo(input)
         else
-            return RunPartOne(input)
+            runPartOne(input)
     }
-    abstract fun RunPartOne(input: String): String
-    abstract fun RunPartTwo(input: String): String
+    abstract fun runPartOne(input: String): String
+    abstract fun runPartTwo(input: String): String
 }

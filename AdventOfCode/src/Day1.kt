@@ -1,11 +1,11 @@
 import kotlin.math.abs
 
 class Day1: Day() {
-    private fun CreateLists(input: String ): Pair<MutableList<Int>, MutableList<Int>>
+    private fun createLists(input: String ): Pair<MutableList<Int>, MutableList<Int>>
     {
         val firstList: MutableList<Int> = mutableListOf()
         val secondList: MutableList<Int> = mutableListOf()
-        val lines = splitLines(input)
+        val lines = input.lines()
         for(line in lines)
         {
             val values = line.split("\\s+ ".toRegex()).toTypedArray()
@@ -18,10 +18,10 @@ class Day1: Day() {
         return Pair(firstList, secondList)
     }
 
-    override fun RunPartOne(input: String): String
+    override fun runPartOne(input: String): String
     {
-        val lists = CreateLists(input)
-        var totalDistance:Int = 0
+        val lists = createLists(input)
+        var totalDistance = 0
         for(i in lists.first.indices)
         {
             val distance = abs(lists.first[i]-lists.second[i])
@@ -29,9 +29,9 @@ class Day1: Day() {
         }
         return totalDistance.toString()
     }
-    override fun RunPartTwo(input: String): String
+    override fun runPartTwo(input: String): String
     {
-        val lists = CreateLists(input)
+        val lists = createLists(input)
         val similarityMap:MutableMap<Int,Int> = mutableMapOf()
         var totalSimilarity = 0
         for(item in lists.first)

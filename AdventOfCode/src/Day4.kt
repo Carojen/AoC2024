@@ -1,21 +1,21 @@
 class Day4:Day() {
 
-    val xmas: String = "XMAS"
-    val samx: String = "SAMX"
-    val wordLength = 4
+    private val xmas: String = "XMAS"
+    private val samx: String = "SAMX"
+    private val wordLength = 4
 
-    override fun RunPartOne(input: String): String
+    override fun runPartOne(input: String): String
     {
         var totalAmount = 0
-        val lines: List<String> = splitLines(input.trim()).map{it.trim()}
+        val lines: List<String> = input.trim().lines().map{it.trim()}
         totalAmount += findHorizontal(lines)
         totalAmount += findVertical(lines)
         totalAmount += findDiagonal(lines)
         return totalAmount.toString()
     }
 
-    override fun RunPartTwo(input: String): String {
-        val lines: List<String> = splitLines(input.trim()).map{it.trim()}
+    override fun runPartTwo(input: String): String {
+        val lines: List<String> = input.trim().lines().map{it.trim()}
         return findCrossings(lines).toString()
     }
 
@@ -36,7 +36,7 @@ class Day4:Day() {
         var totalVerticalAmount = 0
         for(i in lines[0].indices)
         {
-            var column:String = ""
+            var column = ""
             for(line in lines)
             {
                 column += line[i]
@@ -51,10 +51,10 @@ class Day4:Day() {
     private fun findDiagonal(lines:List<String>):Int
     {
         var totalDiagonalAmount = 0
-        var checkUp: Boolean = true
-        var checkDown: Boolean = true
-        var checkLeft: Boolean = true
-        var checkRight: Boolean = true
+        var checkUp = true
+        var checkDown = true
+        var checkLeft = true
+        var checkRight = true
         //println("Total area: ${lines.indices.count()} x ${lines[0].indices.count()}")
 
         for (lineIndex in lines.indices)
@@ -124,7 +124,7 @@ class Day4:Day() {
 
     private fun findCrossings(lines:List<String>):Int
     {
-        var totalCrossings: Int = 0
+        var totalCrossings = 0
         for(lineIndex in lines.indices)
         {
             if(lineIndex == 0 || lineIndex == lines.indices.last()) continue

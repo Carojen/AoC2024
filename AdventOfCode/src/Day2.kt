@@ -2,12 +2,12 @@ import kotlin.math.abs
 import kotlin.math.sign
 
 class Day2:Day() {
-    override fun RunPartTwo(input: String): String
+    override fun runPartTwo(input: String): String
     {
         return runDay(input, true)
     }
 
-    override fun RunPartOne(input: String): String
+    override fun runPartOne(input: String): String
     {
         return runDay(input, false)
     }
@@ -17,12 +17,10 @@ class Day2:Day() {
         val currentLine = line.replace(Regex("\\s+"), " ")
         val levels = currentLine.split(" ")
         var previousLevel: Int? = null
-        var safe: Boolean = true
+        var safe = true
         for(i in levels.indices)
         {
-            val currentLevel = levels[i].trim().toIntOrNull()
-            if(currentLevel == null)
-                continue
+            val currentLevel = levels[i].trim().toIntOrNull() ?: continue
 
             if(previousLevel == null)
             {
@@ -51,7 +49,7 @@ class Day2:Day() {
 
     private fun runDay(input: String, allowOneOff: Boolean = false):String
     {
-        val lines = splitLines(input)
+        val lines = input.lines()
         var numberOfSafeReports = 0
         for(line in lines)
         {
@@ -61,7 +59,7 @@ class Day2:Day() {
             var safe = checkLineSafety(currentLine)
             if(!safe && allowOneOff)
             {
-                safe = checkWithDampener(currentLine, safe)
+                safe = checkWithDampener(currentLine)
             }
             if(safe)
                 numberOfSafeReports++
@@ -70,22 +68,22 @@ class Day2:Day() {
         return numberOfSafeReports.toString()
     }
 
-    private fun checkWithDampener(currentLine: String, safe: Boolean): Boolean {
-        var safe1 = safe
+    private fun checkWithDampener(currentLine: String): Boolean {
+        var safe = false
         val levelArray: Array<Int> = currentLine.split("\\s+".toRegex()).map { it.toInt() }.toTypedArray()
         for (i in levelArray.indices) {
-            var shortLine: String = ""
+            var shortLine = ""
             for (levelIndex in levelArray.indices) {
                 if (i == levelIndex) continue
                 shortLine += levelArray[levelIndex].toString() + " "
             }
             if (shortLine.isEmpty()) continue
-            safe1 = checkLineSafety(shortLine)
-            println("   Check $shortLine: $safe1 (${shortLine.length})")
-            if (safe1) {
+            safe = checkLineSafety(shortLine)
+            println("   Check $shortLine: $safe (${shortLine.length})")
+            if (safe) {
                 break
             }
         }
-        return safe1
+        return safe
     }
 }

@@ -23,6 +23,7 @@ fun main() {
             "2" -> result = Day2().runPart(part, input)
             "3" -> result = Day3().runPart(part, input)
             "4" -> result = Day4().runPart(part, input)
+            "5" -> result = Day5().runPart(part, input)
         }
 
         println("The result of $dayAndPart is $result")
